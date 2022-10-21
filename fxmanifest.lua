@@ -1,10 +1,9 @@
 fx_version 'cerulean'
 game 'gta5'
 
-author '!Baap'
-description 'Piggyback'
-
-
+author 'GodsDevelopment'
+description 'GD-PiggyBack'
+version '1.0.0'
 
 
 client_scripts {
