@@ -60,7 +60,7 @@ local function ensureAnimDict(animDict)
     return animDict
 end
 
-RegisterCommand("piggyback", function(source, args)
+RegisterCommand(Config.commend, function(source, args)
 	if not piggyback.InProgress then
 		local closestPlayer = GetClosestPlayer(3)
 		if closestPlayer then
@@ -68,30 +68,36 @@ RegisterCommand("piggyback", function(source, args)
 			if targetSrc ~= -1 then
 				piggyback.InProgress = true
 				piggyback.targetSrc = targetSrc
-				TriggerServerEvent("Piggyback:sync",targetSrc)
+				TriggerServerEvent("gd-piggyback:sync",targetSrc)
 				ensureAnimDict(piggyback.personPiggybacking.animDict)
 				piggyback.type = "piggybacking"
 			else
-				QBCore.Functions.Notify("No one nearby to piggyback!", "error", 2500)
-				-- drawNativeNotification("~r~No one nearby to piggyback!")
+				if core == 'stand' then
+					drawNativeNotification("~r~No one nearby to piggyback!")
+				else
+					QBCore.Functions.Notify("No one nearby to piggyback!", "error", 2500)
+				end
 			end
 		else
-			QBCore.Functions.Notify("No one nearby to piggyback!", "error", 2500)
-			-- drawNativeNotification("~r~No one nearby to piggyback!")
+			if Config.core == 'stand' then
+				drawNativeNotification("~r~No one nearby to piggyback!")
+			else
+				QBCore.Functions.Notify("No one nearby to piggyback!", "error", 2500)
+			end
 		end
 	else
 		piggyback.InProgress = false
 		ClearPedSecondaryTask(PlayerPedId())
 		DetachEntity(PlayerPedId(), true, false)
-		TriggerServerEvent("Piggyback:stop",piggyback.targetSrc)
+		TriggerServerEvent("gd-piggyback:stop",piggyback.targetSrc)
 		piggyback.targetSrc = 0
 	end
 end,false)
 
 
 
-RegisterNetEvent("Piggyback:syncTarget")
-AddEventHandler("Piggyback:syncTarget", function(targetSrc)
+RegisterNetEvent("gd-piggyback:syncTarget")
+AddEventHandler("gd-piggyback:syncTarget", function(targetSrc)
 	local playerPed = PlayerPedId()
 	local targetPed = GetPlayerPed(GetPlayerFromServerId(targetSrc))
 	piggyback.InProgress = true
@@ -100,8 +106,8 @@ AddEventHandler("Piggyback:syncTarget", function(targetSrc)
 	piggyback.type = "beingPiggybacked"
 end)
 
-RegisterNetEvent("Piggyback:cl_stop")
-AddEventHandler("Piggyback:cl_stop", function()
+RegisterNetEvent("gd-piggyback:cl_stop")
+AddEventHandler("gd-piggyback:cl_stop", function()
 	piggyback.InProgress = false
 	ClearPedSecondaryTask(PlayerPedId())
 	DetachEntity(PlayerPedId(), true, false)
