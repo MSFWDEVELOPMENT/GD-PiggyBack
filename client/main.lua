@@ -60,7 +60,7 @@ local function ensureAnimDict(animDict)
     return animDict
 end
 
-RegisterCommand(Config.commend, function(source, args)
+RegisterCommand("piggyback", function(source, args)
 	if not piggyback.InProgress then
 		local closestPlayer = GetClosestPlayer(3)
 		if closestPlayer then
@@ -72,18 +72,12 @@ RegisterCommand(Config.commend, function(source, args)
 				ensureAnimDict(piggyback.personPiggybacking.animDict)
 				piggyback.type = "piggybacking"
 			else
-				if core == 'stand' then
-					drawNativeNotification("~r~No one nearby to piggyback!")
-				else
-					QBCore.Functions.Notify("No one nearby to piggyback!", "error", 2500)
-				end
-			end
-		else
-			if Config.core == 'stand' then
-				drawNativeNotification("~r~No one nearby to piggyback!")
-			else
+				-- drawNativeNotification("~r~No one nearby to piggyback!") -- If your are using esx are any other freamwork
 				QBCore.Functions.Notify("No one nearby to piggyback!", "error", 2500)
 			end
+		else
+			-- drawNativeNotification("~r~No one nearby to piggyback!") -- If your are using esx are any other freamwork
+			QBCore.Functions.Notify("No one nearby to piggyback!", "error", 2500)
 		end
 	else
 		piggyback.InProgress = false

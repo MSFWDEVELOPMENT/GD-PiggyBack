@@ -7,8 +7,7 @@ version '1.0.0'
 
 
 client_scripts {
-    'client/main.lua',
-
+    'client/main.lua'
 }
 
 server_scripts {
